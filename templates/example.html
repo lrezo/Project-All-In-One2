@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<label for="img" class="form-label text-center mt-3 justify-content-center">
+                            Profile Picture* :
+                        </label>
+                      <input class="form-control"  id="img" type="file" name="img" autocomplete="off" required>
+                        <div id="prof_pic" class="d-flex justify-content-center align-items-center"></div>
+                      <script>
+                        window.onload = function () {
+                            var fileUpload = document.getElementById("img");
+                            fileUpload.onchange = function () {
+                                    if (typeof (FileReader) != "undefined") {
+                                        var dvPreview = document.getElementById("prof_pic");
+                                        dvPreview.innerHTML = "";
+                                        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                                        for (var i = 0; i < fileUpload.files.length; i++) {
+                                            var file = fileUpload.files[i];
+                                            if (regex.test(file.name.toLowerCase())) {
+                                                var reader = new FileReader();
+                                                reader.onload = function (e) {
+                                                    var img = document.createElement("IMG");
+                                                    img.height = "150";
+                                                    img.width = "150";
+                                                    img.src = e.target.result;
+                                                    img.className = "m-2 img-fluid hover-shadow rounded";
+                                                    dvPreview.appendChild(img);
+                                                }
+                                                reader.readAsDataURL(file);
+                                            } else {
+                                                alert(file.name + " is not a valid image file.");
+                                                dvPreview.innerHTML = "";
+                                                return false;
+                                            }
+                                        }
+                                    } else {
+                                        alert("This browser does not support HTML5 FileReader.");
+                                    }
+                                }
+                            };
+                        </script>
+</body>
+</html>

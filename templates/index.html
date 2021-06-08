@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+<!--{% block n_class %}fixed-top{% endblock %}/-->
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=True)%}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-success alert-dismissible fade show text-center" style="margin-top: 4.7rem!important; margin-bottom: -60px; font-weight: bold" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+      <style>
+          .hover-2 .hover-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
+}
+
+.hover-2-title {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  text-align: center;
+  width: 100%;
+  z-index: 99;
+  transition: all 0.3s;
+}
+
+.hover-2-description {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+  left: 0;
+  text-align: center;
+  z-index: 99;
+  transition: all 0.3s;
+}
+
+.hover-2:hover .hover-2-title {
+  transform: translateY(-1.5rem);
+}
+
+.hover-2:hover .hover-2-description {
+  bottom: 0.5rem;
+  opacity: 1;
+}
+
+.hover-2:hover .hover-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.1));}
+
+
+.block-color{
+    background-color: #282828;
+    border: 2px solid #db3c35;
+}
+
+a{
+    color: white;
+}
+a:hover{
+    color: white ;
+}
+
+.ml11 {
+  font-weight: 700;
+  font-size: 3.5em;
+}
+
+.ml11 .text-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-top: 0.1em;
+  padding-right: 0.05em;
+  padding-bottom: 0.15em;
+}
+
+.ml11 .line {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 3px;
+  background-color: #fff;
+  transform-origin: 0 50%;
+}
+
+.ml11 .line1 {
+  top: 0;
+  left: 0;
+}
+
+.ml11 .letter {
+  display: inline-block;
+  line-height: 1em;
+}
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+footer{
+    margin-top: auto;
+}
+</style>
+      <header>
+    <!-- Jumbotron -->
+  <div class="mt-5 p-2 text-center " >
+    <h1 class="mb-3" style="padding-top: 3rem;">Project
+    <span
+     class="txt-rotate"
+     data-period="2000"
+     data-rotate='["All In One"]'></span>
+</h1>
+      <script>
+var TxtRotate = function(el, toRotate, period) {
+  this.toRotate = toRotate;
+  this.el = el;
+  this.loopNum = 0;
+  this.period = parseInt(period, 10) || 2000;
+  this.txt = '';
+  this.tick();
+  this.isDeleting = false;
+};
+
+TxtRotate.prototype.tick = function() {
+  var i = this.loopNum % this.toRotate.length;
+  var fullTxt = this.toRotate[i];
+
+  if (this.isDeleting) {
+    this.txt = fullTxt.substring(0, this.txt.length - 1);
+  } else {
+    this.txt = fullTxt.substring(0, this.txt.length + 1);
+  }
+
+  this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+  var that = this;
+  var delta = 225 - Math.random() * 100;
+
+
+  setTimeout(function() {
+    that.tick();
+  }, delta);
+};
+
+window.onload = function() {
+  var elements = document.getElementsByClassName('txt-rotate');
+  for (var i=0; i<elements.length; i++) {
+    var toRotate = elements[i].getAttribute('data-rotate');
+    var period = elements[i].getAttribute('data-period');
+    if (toRotate) {
+      new TxtRotate(elements[i], JSON.parse(toRotate), period);
+    }
+  }
+  // INJECT CSS
+
+};
+      </script>
+      <br>
+  </div>
+  <!-- Jumbotron -->
+</header>
+<div class="">
+
+<div class="row bg-dark animate__backInRight" style="--bs-gutter-x: 0; color: black">
+    <div style="border-top: 1px solid white;"></div>
+    {% for project in projects %}
+        <div class="col-sm-3  p-3"  >
+            <div  style="cursor: pointer" class="card block-color text-white " onclick="location.href='{{ url_for('project', project_id=project['id']) }}'">
+              <div class="card-body text-center text-white justify-content-center" style="height: 200px">
+              <br>
+                  <a class="m" href="{{ url_for('project', project_id=project['id']) }}"><h5 class="card-title">{{  project['title'] }}
+                  {% if 'user' in session %}
+                      {% if 'user' in session and project['user_id'] == session['user'][0] or project['user_id_2'] == session['user'][0] %}
+                      <a href="{{ url_for('project', project_id=project['id']) }}/edit"><span><i class="fas fa-edit" style="margin-left: 0.5rem;"></i></span></a>{% endif %}
+                       {% if 'user' in session and project['user_id'] == session['user'][0] %}
+                      <a onclick="return confirm('Are you sure you want to delete this project?')" href="{{ url_for('project', project_id = project['id']) }}/delete"><i class="far fa-trash-alt"></i></a>
+                      </h5>{% endif %}{% endif %}
+
+                    <p class="card-text animate__backInRight">
+                        {% if project['user_name_1'] and project['user_name_2'] %}
+                            {{ project['user_name_1'] }} - {{ project['user_name_2'] }}
+                        {% else %}
+                            {{ project['user_name_1'] }}
+                        {% endif %}
+                    </p>
+                </a>
+              </div>
+            </div>
+        </div>
+    {% endfor %}
+<div style="border-top: 1px solid white; "></div>
+</div></div>
+{% endblock %}

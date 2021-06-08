@@ -1,0 +1,152 @@
+{%extends "base.html" %}
+{% block title %} - {{ post['title'] }}{% endblock %}
+{% block n_class %} fixed-top{% endblock %}
+{%block content%}
+    <div class="container mt-5 pt-3">
+    <p class="h1 text-center pt-3 pb-2 title"><strong>{{ post['title']}}</strong></p>
+    <div class="row">
+        <div class="col-md-12">
+            <script>
+                    const element = document.querySelector('.title');
+                        element.classList.add('animate__animated', 'animate__fadeIn');
+                </script>
+<div
+  id="carousel-project-template"
+  class="carousel slide carousel-fade carousel-dark title"
+  data-mdb-ride="carousel"
+>
+
+  <div class="carousel-inner ">
+    <!-- Single item -->
+      {% for photo in photos_slider %}
+    <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
+      <img
+        src="/{{ path }}/{{ photo }}"
+        class="d-block w-100"
+        style="border-radius: 12px"
+        alt="..."
+        height="583"
+        width="1320"
+      />
+      <div class="carousel-caption d-none d-md-block">
+      </div>
+    </div>
+      {% endfor %}
+  </div>
+
+  <!-- Inner -->
+
+  <!-- Controls -->
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-mdb-target="#carousel-project-template"
+    data-mdb-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-mdb-target="#carousel-project-template"
+    data-mdb-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- Carousel wrapper -->
+            <div class="row" style="padding: 30px 0 30px 0;">
+                <h1 class="display-6 text-center p-3 title2"><strong>Description</strong></h1>
+                <p>{{ post['content'] | safe}}</p>
+                <script>
+                        const element = document.querySelector('.title2');
+                            element.classList.add('animate__animated', 'animate__fadeInDown');
+                    </script>
+            </div>
+        </div>
+        </div>
+    <div>
+        <h1 class="h1 mt-1 mb-3 text-center">Foto's</h1>
+        <div class="container  justify-content-center align-items-center">
+                <div class="row">
+                    {% for photo in photos_slider %}
+                            <div class="col-md-4">
+                                <img
+                                  src="/{{ path }}/{{ photo }}"
+                                  class="img-fluid hover-shadow rounded m-1"
+                                  alt=""
+                                  width="780"
+                                  height="520"
+                                />
+                            </div>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+        <div class="row">
+    <div class=" mb-3 text-center col">
+    {% if post['user_name_1'] and post['user_name_2'] %}
+        <h1 class="h1 mt-3 mb-3"> Team  </h1>
+    {% else %}
+        <h1 class="h1 mt-3 mb-3"> Team </h1>
+    {% endif %}
+        <div class="justify-content-center d-flex">
+            {% if post['user_name_1'] %}
+
+            <div class="card m-2" style="width: 14rem; background-color: transparent!important; color: white!important; border: 1px solid">
+
+                    <img src="/static/img/profile-pics/{{ post['user_id'] }}/{{ post['user_1_name'] }}.jpg"
+
+                    class="card-img-top col-md-6 "
+                    alt="..."
+                    style="min-width: auto; min-height: 300px; max-height: 300px;"
+
+                  />
+              <div class="card-body" style=" border-top: 1px solid;">
+                <p class="card-text">
+                    {{ post['user_name_1']}}
+                </p>
+              </div>
+            </div>
+
+            {% endif %}
+            {% if post['user_name_2'] %}
+            <div class="card m-2" style="width: 14rem; background-color: transparent!important; color: white!important; border: 1px solid">
+              <img
+                src="/static/img/profile-pics/{{ post['user_id_2'] }}/{{ post['user_2_name'] }}.jpg"
+                class="card-img-top col-md-6"
+                alt="..."
+                style="min-width: auto; min-height: 300px; max-height: 300px;"
+              />
+              <div class="card-body " style=" border-top: 1px solid;">
+                <p class="card-text">
+                    {{ post['user_name_2']}}
+                </p>
+              </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+        </div>
+</div>
+    <style>
+        img{
+            pointer-events: none;
+        }
+        body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+footer{
+    margin-top: auto;
+}
+    </style>
+
+
+
+
+{% endblock %}
+

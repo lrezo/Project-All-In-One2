@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} - Login{% endblock%}
+{% block f_style %}margin-top:5rem; background-color:transparent;{% endblock %}
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center" style="margin-top: 6em!important;">
+        <form method="post">
+            <div class="">
+                <div class="d-flex justify-content-center">
+                <img
+                        src="../static/img/logo_dbti_cmyk_ztklein.png"
+                        height="48"
+                        alt=""
+                        loading="lazy"/>
+                </div>
+                <p class="text-center">Project All In One</p>
+            </div>
+          <div class="form-outline mb-4">
+            <input type="email" id="form2Example1" class="form-control" />
+            <label class="form-label" for="form2Example1">Email address</label>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <input type="password" id="form2Example2" class="form-control" />
+            <label class="form-label" for="form2Example2">Password</label>
+          </div>
+
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <div class="form-check">
+                <input
+                  class=" border-danger bg-dark form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="form2Example3"
+                  checked
+                />
+                <label class="form-check-label" for="form2Example3"> Remember me </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit" class="border-danger bg-dark btn btn-primary btn-block mb-4">Sign in</button>
+
+          <!-- Register buttons -->
+          <div class="text-center">
+            <p>or sign up with:</p>
+          </div>
+            <div class="col-md-12 mb-4">
+
+                <button type="button" class="btn btn-block "><img class="col-md-4" src="../static/img/smartschool.png" alt="smartschool logo"></button>
+            </div>
+        </form>
+    </div>
+{% endblock%}

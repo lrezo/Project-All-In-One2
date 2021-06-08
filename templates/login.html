@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+{% block title %} - Login{% endblock%}
+
+{% block content %}
+    <style>
+    .form-outline .form-control:focus~.form-notch .form-notch-leading {
+    border-top: .125rem solid white;
+    border-bottom: .125rem solid white;
+    border-left: .125rem solid white;}
+    .form-outline .form-control:focus~.form-label {
+    color: white;
+}
+    .form-outline .form-control:focus~.form-notch .form-notch-middle {
+    border-bottom: .125rem solid;
+    border-color: white;
+}
+    .form-outline .form-control:focus~.form-notch .form-notch-trailing {
+    border-top: .125rem solid white;
+    border-bottom: .125rem solid white;
+    border-right: .125rem solid white;
+}
+    .form-check-input:checked:focus:before {
+    -webkit-box-shadow: 0 0 0 13px #262626;
+    box-shadow: 0 0 0 13px #262626;}
+    .border-danger {
+    border-color: #e73232!important;
+}
+    .alert-danger {
+    color: black;
+    background-color: rgba(196, 191, 191, 0.67);
+    border:solid 3px #262626;
+        font-weight: bold;
+
+
+}
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #e73232;
+    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+}
+    .nav-pills .nav-link {
+    border-radius: .25rem;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 17px 3.5rem 16px;
+    line-height: 1;
+    background-color: rgb(38 38 38);
+    font-weight: 500;
+    color: #fff;
+    margin: .5rem;
+}
+    .nav-pills .nav-link:hover{
+            background-color: rgba(31, 31, 31, 0.53);
+}
+    .btn.active, .btn.active:focus, .btn.focus, .btn:active, .btn:active:focus, .btn:focus, .btn:hover {
+     background-color: rgba(31, 31, 31, 0.53);
+
+}
+    .btn-check:active+.btn-primary:focus, .btn-check:checked+.btn-primary:focus, .btn-primary.active:focus, .btn-primary:active:focus, .show>.btn-primary.dropdown-toggle:focus {
+        background-color: rgba(31, 31, 31, 0.53);
+}
+    .form-control:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-color: #262626;
+    -webkit-box-shadow: inset 0 0 0 1px #262626;
+    box-shadow: inset 0 0 0 1px #262626;
+}
+    a{
+        color: white;
+    }
+    a:hover{
+        color: gray;
+    }
+    .form-outline .form-control {
+    min-height: auto;
+    padding: .33em .75em;
+    border: 0;
+    background: transparent;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+    color: white;
+}
+    body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+footer{
+    margin-top: auto;
+}
+::-ms-reveal {
+  filter: invert(100%);
+}
+input {
+  color: white;
+  background-color: black;
+}
+input::-webkit-file-upload-button{
+    display: none;
+    }
+    </style>
+    <div class="d-flex justify-content-center align-items-center " style="margin-top: 7em!important; margin-bottom: 0.75rem">
+    <div>
+
+            <ul class="nav nav-pills mb-3  justify-content-center " id="pills-tab2" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active mb-3 "
+                  id="pills-home-tab2"
+                  data-mdb-toggle="pill"
+                  data-mdb-target="#pills-home2"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true"
+                >
+                  Login
+                </button>
+              </li>
+              <li class="nav-item" role="presentation" href="login/signup">
+                <button
+                  class="nav-link"
+                  id="pills-profile-tab2"
+                  data-mdb-toggle="pill"
+                  data-mdb-target="#pills-profile2"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-profile"
+                  aria-selected="false"
+                  href="/login/signup"
+                >
+                  Register
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent2">
+              <div
+                class="tab-pane fade show active"
+                id="pills-home2"
+                role="tabpanel"
+                aria-labelledby="pills-home-tab2"
+              ><form method="POST" action="{{ url_for('login')}}">
+                                        <div class="">
+                            <div class="d-flex justify-content-center">
+                            <img
+                                    src="../static/img/logo_dbti_cmyk_ztklein.png"
+                                    height="48"
+                                    alt=""
+                                    loading="lazy"/>
+                            </div>
+                            <p class="text-center">Project All In One</p>
+                                </div>
+                                    {% with messages = get_flashed_messages(with_categories=True)%}
+                                 {% if messages %}
+                                  {% for category, message in messages %}
+                                        <div class="alert alert-danger alert-dismissible fade show text-center text-black" role="alert">
+                                            {{ message }}
+                                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                  {% endfor %}
+                                 {% endif %}
+                                 {% endwith %}
+
+                      <div class="form-outline mb-4">
+                        <input type="email" id="email" class="form-control" name="email" value="{{ request.form['email']}}"/>
+                        <label class="form-label text-white" for="email">Email address</label>
+                      </div>
+
+                      <!-- Password input -->
+                      <div class="form-outline mb-4">
+                        <input  type="password" id="password" class="form-control" name="password" value="{{ request.form['password']}}" />
+                        <label class="form-label text-white" for="password">Password</label>
+                      </div>
+
+                      <!-- 2 column grid layout for inline styling -->
+                      <div class="row mb-4">
+                        <div class="col d-flex justify-content-center">
+                          <!-- Checkbox -->
+                          <div class="form-check">
+                            <input
+                              class=" border-danger bg-dark form-check-input"
+                              type="checkbox"
+                              value="{{ request.form['=']}}"
+                              id="remember"
+                              checked
+                              name="remember"
+
+                            />
+                            <label class="form-check-label" for="remember" > Remember me </label>
+                          </div>
+                        </div>
+                            <div class="col " style="margin-top : -3.12px; color: white!important;">
+                              <!-- Simple link -->
+                              <a href="/password-recovery">Forgot password?</a>
+                            </div>
+                      </div>
+
+                      <!-- Submit button -->
+                      <button  type="submit" id="submit" name="submit" value="{{ request.form['submit'] }}" class="border-danger bg-dark btn btn-primary btn-block mb-4" style="">Sign in</button>
+              </form></div>
+              <div
+                class="tab-pane fade"
+                id="pills-profile2"
+                role="tabpanel"
+                aria-labelledby="pills-profile-tab2"
+              >
+                <form action="{{ url_for('signup') }}" method="post" enctype="multipart/form-data">
+                  <div class="">
+                            <div class="d-flex justify-content-center">
+                            <img
+                                    src="../static/img/logo_dbti_cmyk_ztklein.png"
+                                    height="48"
+                                    alt=""
+                                    loading="lazy"/>
+                            </div>
+                            <p class="text-center">Project All In One</p>
+                                </div><div id="signup">
+                                    {% with message = get_flashed_messages(with_categories=True)%}
+                                 {% if message %}
+                                  {% for category, messagef in message %}
+                                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                            {{ messagef }}
+                                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                  {% endfor %}
+                                 {% endif %}
+                                 {% endwith %}</div>
+                                                  <div class="form-outline mb-4">
+                        <input type="text" id="name" class="form-control" name="name" value="{{ request.form['name']}}"/>
+                        <label class="form-label text-white" for="name">Name*</label>
+                      </div>
+                                                                          <div class="form-outline mb-4">
+                        <input type="text" id="lastname" class="form-control" name="lastname" value="{{ request.form['lastname']}}"/>
+                        <label class="form-label text-white" for="lastname">Last Name*</label>
+                      </div>
+                                                                <div class="form-outline mb-4">
+                        <input type="email" id="email2" class="form-control" name="email2" value="{{ request.form['email2']}}"/>
+                        <label class="form-label text-white" for="email2">Email address*</label>
+                      </div>
+                                    <div class="form-outline mb-4">
+                        <input type="password" id="password2" class="form-control" name="password2" value="{{ request.form['password2']}}" />
+                        <label class="form-label text-white" for="password2">Password*</label>
+                      </div>
+                  <div>
+                            <div class="">
+                            <label >
+                                <select name="class" class="form-control" style="width: 10.25rem; color: white; background-color: transparent">
+                                    <option style="color: white; background-color: #19181A;"  class="text-center justify-content-center align-items-center" selected>Class* : </option>
+                                    {% for i in classrooms %}
+                                    <option style="color: white; background-color: #19181A;"  type="text" id="class" name="class" value= {{ i[0] }} >{{ i[0] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                            <label>
+                                <select name="role" class="form-control" style="width: 10.25rem; color: white; background-color: transparent">
+                                    <option style="color: white; background-color: #19181A;" class="text-center justify-content-center align-items-center" selected>Role* : </option>
+                                    <option style="color: white; background-color: #19181A;" type="text" id="role" name="role" value="Student">Student</option>
+                                    <option style="color: white; background-color: #19181A;" type="text" id="role" name="role" value="Student">Teacher</option>
+                                </select>
+                            </label>
+                            </div>
+
+
+
+                        <label for="img" class="form-label text-center text-white mt-3 justify-content-center">
+                            Profile Picture* :
+                        </label>
+                      <input class="form-control " style="background-color: transparent; color: white;"  id="img" type="file" name="img" autocomplete="off" required>
+                        <div id="prof_pic" class="d-flex justify-content-center align-items-center"></div>
+                      <script>
+                        window.onload = function () {
+                            var fileUpload = document.getElementById("img");
+                            fileUpload.onchange = function () {
+                                    if (typeof (FileReader) != "undefined") {
+                                        var dvPreview = document.getElementById("prof_pic");
+                                        dvPreview.innerHTML = "";
+                                        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                                        for (var i = 0; i < fileUpload.files.length; i++) {
+                                            var file = fileUpload.files[i];
+                                            if (regex.test(file.name.toLowerCase())) {
+                                                var reader = new FileReader();
+                                                reader.onload = function (e) {
+                                                    var img = document.createElement("IMG");
+                                                    img.height = "150";
+                                                    img.width = "150";
+                                                    img.src = e.target.result;
+                                                    img.className = "m-2 img-fluid hover-shadow rounded";
+                                                    dvPreview.appendChild(img);
+                                                }
+                                                reader.readAsDataURL(file);
+                                            } else {
+                                                alert(file.name + " is not a valid image file.");
+                                                dvPreview.innerHTML = "";
+                                                return false;
+                                            }
+                                        }
+                                    } else {
+                                        alert("This browser does not support HTML5 FileReader.");
+                                    }
+                                }
+                            };
+                        </script>
+
+                  <br>
+                  <button  type="submit" id="submit2" name="submit2" value="{{ request.form['submit2'] }}" class="border-danger bg-dark btn btn-primary btn-block mb-4" style="">Sign Up</button>
+                  </div></form>
+              </div>
+            </div>
+    </div>
+    </div>
+    <br>
+
+{% endblock%}

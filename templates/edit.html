@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=True)%}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+    <style>
+    .btn-primary {
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid;
+}
+    .btn-primary.focus, .btn-primary:focus, .btn-primary:hover {
+    color: #fff;
+    background-color: black;
+        border: 1px solid;
+}
+    .btn-danger.focus, .btn-danger:focus, .btn-danger:hover {
+    color: #fff;
+    background-color: black;
+    border: 1px solid;
+}
+    .btn-danger {
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid;
+}
+    </style>
+<div class="container-fluid">
+    <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 justify-content-center align-items-center">
+                <form method="post" enctype="multipart/form-data">
+                    <h1 class="text-center mt-3">{% block title %} Edit your project {% endblock %}</h1>
+                            <br>
+                            <div class="text-center">
+                                <label class="form-group text-center justify-content-center align-items-center">
+                                    <input type="text" name="title"
+                                       placeholder="Project title" class="form-control"
+                                       value="{{ request.form['title'] or post['title'] }}">
+                                </label></div>
+                            <br>
+                                <div class="form-group text-center">
+                                    <h1>Description</h1>
+                                    <br>
+                                    <label>
+
+                                        {{ ckeditor.create(value = post['content']) }}
+                                    </label>
+                                </div>
+                                    <div>
+                    <h1 class="h1 mt-1 mb-3 text-center">Foto's</h1>
+                    <div class="container  justify-content-center align-items-center">
+                            <div class="row">
+                                {% for photo in photos_slider %}
+                                        <div class="col-md-4">
+                                            <a href="{{ url_for('delete_img',project_id = post['id'],img = photo ) }}" onclick="return confirm('Are you sure you want to delete this photo?')">
+
+
+                                            <img
+                                              src="/{{ path }}/{{ photo }}"
+                                              class="img-fluid hover-shadow rounded m-1"
+                                              alt=""
+                                              width="780"
+                                              height="520"
+                                            />
+                                            </a>
+
+                                        </div>
+
+                                {% endfor %}
+
+                            <input  style="background-color: transparent; color: white; margin-top: 1rem" class="form-control" type="file" id="photo_slider" name="photo_slider" multiple="multiple" autocomplete="off" >
+                                <div class="form-control text-center container-fluid image-preview mt-2 mb-2 " style="background-color: transparent; color: white; margin-top: 1rem" id="Imagepreview">
+                                    <span style="background-color: transparent; color: white" class="image-preview__default-text border-black"> Image Preview</span>
+                                </div>
+                                <script>
+                                    window.onload = function () {
+                                        var fileUpload = document.getElementById("photo_slider");
+                                        fileUpload.onchange = function () {
+                                                if (typeof (FileReader) != "undefined") {
+                                                    var dvPreview = document.getElementById("Imagepreview");
+                                                    dvPreview.innerHTML = "";
+                                                    var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                                                    for (var i = 0; i < fileUpload.files.length; i++) {
+                                                        var file = fileUpload.files[i];
+                                                        if (regex.test(file.name.toLowerCase())) {
+                                                            var reader = new FileReader();
+                                                            reader.onload = function (e) {
+                                                                var img = document.createElement("IMG");
+                                                                img.height = "150";
+                                                                img.width = "150";
+                                                                img.src = e.target.result;
+                                                                img.className = "m-2 img-fluid hover-shadow rounded";
+                                                                dvPreview.appendChild(img);
+                                                            }
+                                                            reader.readAsDataURL(file);
+                                                        } else {
+                                                            alert(file.name + " is not a valid image file.");
+                                                            dvPreview.innerHTML = "";
+                                                            return false;
+                                                        }
+                                                    }
+                                                } else {
+                                                    alert("This browser does not support HTML5 FileReader.");
+                                                }
+                                            }
+                                        };
+                                    </script>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <h1 class="d-flex justify-content-center">Your team </h1>
+                                    <br>
+                                        <div class="d-flex justify-content-center">
+                                        <label for="example-getting-started"></label><select style="background-color: transparent; color: white;" name="mate2" id="example-getting-started">
+                                     {% if not post['user_id_2'] %}
+                                         <option style="background-color: #19181a; color: white;" selected>Choose your team mate</option>
+                                     {% else %}
+                                     <option style="background-color: #19181a; color: white;" value="{{ post['user_id_2'] }} {{ post['user_name_2'] }}" selected>{{ post['user_name_2'] }}</option>
+                                         <option style="background-color: #19181a; color: white;" >Choose your team mate</option>
+                                     {% endif %}
+                                    {% for user in users %}
+                                        {% if user['id'] != session['user'][0] and user['id'] != post['user_id_2'] and user['id'] != post['user_id'] %}
+                                        <option style="background-color: #19181a; color: white;" type="text" class="form-control" aria-label="Your Mates" value="{{ user['id'] }} {{ user['name']}} {{user['lastname'] }}">{{ user['name']}} {{user['lastname'] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select></div>
+                                    <br>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                </form>
+                    <div class="justify-content-center align-items-center text-center mt-2 mb-2">
+                        <form action="{{ url_for('delete', project_id = post['id'])}}" method="post">
+                            <input type="submit" value="Delete Post"
+                            class="btn btn-danger "
+                            onclick="return confirm('Are you sure you want to delete this project?')">
+                        </form>
+                    </div>
+            <br>
+            </div>
+            <div class="col-md-2"></div>
+    </div>
+</div>
+
+{% endblock %}

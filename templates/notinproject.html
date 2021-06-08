@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+    Youre not in the project
+{% endblock %}
+    {% block f_style%}
+
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+
+    {% endblock %}
+{% block content %}
+    <br>
+    <br><br><br><br><br><br><br><br>
+    <div class="container justify-content-center align-items-center">
+    {% if request.path == url_for('edit', project_id = post['id']) %}
+    <h3 class="text-center mt-3 p-2">You can't edit the project '{{ post['title'] }}' because you are not part of it.</h3>
+    <h3 class="text-center">Ask the creator "{{ post['user_name_1'] }}" to add you in the project.</h3>
+    {% else %}
+    <h3 class="text-center mt-3">You can't delete the project '{{ post['title'] }}' because you have not the right to do it .</h3>
+    <h3 class="text-center">You need to be the creator of the project to delete it.</h3>
+    {% endif %}</div>
+{% endblock %}

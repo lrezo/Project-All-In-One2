@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{{ ckeditor.load() }}
+{{ ckeditor.load(custom_url=url_for('static', filename='ckeditor5/build/ckeditor.js')) }}
+{{ ckeditor.config(width = 800) }}
+{{ ckeditor.config() }}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=True)%}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+    <style>
+
+        label {
+            display: inline-block;
+            margin-bottom: .5rem;
+        }
+        p{
+    margin: 0px 0px 0px 10px;}
+        .btn-primary {
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid;
+}
+    .btn-primary.focus, .btn-primary:focus, .btn-primary:hover {
+    color: #fff;
+    background-color: black;
+        border: 1px solid;
+}
+    </style>
+<form method="post" action="{{ url_for('create') }}" enctype="multipart/form-data">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8 justify-content-center align-items-center">
+                <h1 class="text-center mt-3 ">{% block title %} Post your project {% endblock %}</h1>
+                <div class="form-group text-center ">
+                    <br>
+                    <label class="text-center">
+                        <input type="text" name="title"
+                               placeholder="Project title" class="form-control"
+                               value="{{ request.form['title'] }}">
+                    </label>
+                </div>
+                <br>
+                <div class="form-group text-center">
+                    <h1>Description</h1>
+                    <br>
+                    <label>
+                        {{ ckeditor.create(value = 'Type here the details of your project') }}
+                    </label>
+                    <br><br>
+                    <h1 class="m-2">Upload the project photos</h1>
+                <br>
+                    <input style="background-color: transparent; color: white;" class="form-control" type="file" id="photo_slider" name="photo_slider" multiple="multiple" autocomplete="off" required>
+                    <div style="background-color: transparent; color: white;" class="form-control container-fluid image-preview mt-2 mb-2 " style="border: 2px solid lightgray" id="Imagepreview">
+                        <span class="image-preview__default-text border-black"> Image Preview</span>
+                    </div>
+                    <script>
+                        window.onload = function () {
+                            var fileUpload = document.getElementById("photo_slider");
+                            fileUpload.onchange = function () {
+                                    if (typeof (FileReader) != "undefined") {
+                                        var dvPreview = document.getElementById("Imagepreview");
+                                        dvPreview.innerHTML = "";
+                                        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                                        for (var i = 0; i < fileUpload.files.length; i++) {
+                                            var file = fileUpload.files[i];
+                                            if (regex.test(file.name.toLowerCase())) {
+                                                var reader = new FileReader();
+                                                reader.onload = function (e) {
+                                                    var img = document.createElement("IMG");
+                                                    img.height = "150";
+                                                    img.width = "150";
+                                                    img.src = e.target.result;
+                                                    img.className = "m-2 img-fluid hover-shadow rounded";
+                                                    dvPreview.appendChild(img);
+                                                }
+                                                reader.readAsDataURL(file);
+                                            } else {
+                                                alert(file.name + " is not a valid image file.");
+                                                dvPreview.innerHTML = "";
+                                                return false;
+                                            }
+                                        }
+                                    } else {
+                                        alert("This browser does not support HTML5 FileReader.");
+                                    }
+                                }
+                            };
+                        </script>
+                    <br>
+                    <h1>Your team </h1>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <div class="mr-2">
+                            <div class=" col input-group mr-2">
+
+                                </div>
+                                <label for="example-getting-started"></label><select style="background-color: transparent; color: white;" name="mate2" id="example-getting-started">
+                                     <option style="background-color: #19181a; color: white;" selected>Choose your team mate</option>
+                                    {% for user in users %}
+                                        {% if user['id'] != session['user'][0]%}
+                                        <option style="background-color: #19181a; color: white;" type="text" class="form-control" aria-label="Your Mates" value="{{ user['id'] }} {{ user['name']}} {{user['lastname'] }}">{{ user['name']}} {{user['lastname'] }}</option>
+                                        <span ></span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+
+                        </div>
+                    </div>
+                <div>
+
+                <label>
+
+                </label>
+                </div>
+
+                </div>
+
+
+
+
+
+                <div>
+
+
+                <div class="form-group text-center mb-2">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div><div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+        <script type="text/javascript">
+    $(document).ready(function() {
+        $('#example-getting-started').multiselect();
+    });
+</script>
+{% endblock %}
